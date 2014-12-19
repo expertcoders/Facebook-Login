@@ -1,0 +1,62 @@
+<!DOCTYPE html> 
+<html xmlns:fb="https://www.facebook.com/2008/fbml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <title>-:: Facebook Login ::-</title>
+        <!--
+            @author: Expert Coders ( https://github.com/expertcoders) 
+        -->
+    </head>
+    <body>
+<div id="fb-root"></div>
+<script>
+window.fbAsyncInit = function () {
+  FB.init({
+    appId: 'APP ID',
+    status: true,
+    cookie: true,
+    xfbml: true
+  });
+};
+
+(function (doc) {
+  var js;
+  var id = 'facebook-jssdk';
+  var ref = doc.getElementsByTagName('script')[0];
+  if (doc.getElementById(id)) {
+    return;
+  }
+  js = doc.createElement('script');
+  js.id = id;
+  js.async = true;
+  js.src = "//connect.facebook.net/en_US/all.js";
+  ref.parentNode.insertBefore(js, ref);
+}(document));
+
+
+function FBLogin() {
+  FB.login(function (response) {
+    if (response.authResponse) {
+      FB.api('/me', function (response) {
+	//savedataonserver(id,name,email);
+	var name=response.name;
+	FB.api('/me/picture?type=normal', function (response) {
+	  var imageUrl=response.data.url;
+	  //Do what ever want to do here
+	  document.getElementById("profileName").innerHTML="Welcome, "+name;
+	  document.getElementById("profileImage").setAttribute("src", response.data.url);
+		
+        });
+      });
+    } else {
+      alert("Login attempt failed!");
+    }
+  }, { scope: 'email,user_photos,publish_actions'});
+}
+
+</script>
+<center><a href="javascript:void(0)" onClick="FBLogin()"><img src="login.png"></a></center>
+<div id="profileName"></div>
+<div><img src="" id="profileImage"></div>
+</body>
+</html>
